@@ -11,7 +11,7 @@ class ProductList extends React.Component {
   state = {
     items: [],
     currentItem: {
-      productName: '',
+      productName: 'Наименование',
       productValue: 1,
       key: '',
     }
@@ -39,6 +39,16 @@ class ProductList extends React.Component {
     }))
   };
 
+  onInputFocus =() => {
+    this.setState((prevState) => ({
+      ...prevState,
+      currentItem: {
+        ...prevState.currentItem,
+        productName: ''
+      }
+    }));
+  }
+
   onChangeInput = (event) => {
     let text = event.target.value;
     this.setState((prevState) => ({
@@ -52,11 +62,11 @@ class ProductList extends React.Component {
   };
 
   onAddClick = () => {
-    if (this.state.currentItem.productName) {
+    if (this.state.currentItem.productName && this.state.currentItem.productName !== 'Наименование') {
       this.setState({
         items: [...this.state.items, this.state.currentItem],
         currentItem: {
-          productName: '',
+          productName: 'Наименование',
           productValue: 1,
           key: '',
         }
@@ -75,27 +85,29 @@ class ProductList extends React.Component {
   render() {
     return (
       <div className="ProductList">
-        <TextField
-          onChange={this.onChangeInput}
-          onFocus={this.onInputFocus}
-          id="outlined-helperText"
-          value={this.state.currentItem.productName}
-          helperText="Введите наименование продукта и количество"
-          variant="outlined"
-        />
-        <Fab onClick={this.onPlusClick} color="secondary" aria-label="add">
-          <AddIcon />
-        </Fab>
-        <TextField
-          id="outlined-helperText"
-          value={this.state.currentItem.productValue}
-          variant="outlined"
-        />
-
-        <Fab onClick={this.onMinusClick} color="secondary" aria-label="add">
-          <RemoveIcon />
-        </Fab>
-        <div>
+        <div className="input-wrap">
+          <TextField
+            onChange={this.onChangeInput}
+            onFocus={this.onInputFocus}
+            id="outlined-helperText"
+            value={this.state.currentItem.productName}
+            helperText="Введите наименование продукта и количество"
+            variant="outlined"
+          />
+          <Fab onClick={this.onMinusClick} color="secondary" aria-label="add">
+            <RemoveIcon />
+          </Fab>
+          <TextField
+            className="num-input"
+            id="outlined-helperText"
+            value={this.state.currentItem.productValue}
+            variant="outlined"
+          />
+          <Fab onClick={this.onPlusClick} color="secondary" aria-label="add">
+            <AddIcon />
+          </Fab>
+        </div>
+        <div className="addButtonContainer">
           <Button onClick={this.onAddClick} variant="contained" color="primary">
             Добавить
           </Button>
