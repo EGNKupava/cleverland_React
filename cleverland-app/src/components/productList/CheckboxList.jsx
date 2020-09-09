@@ -19,7 +19,6 @@ const useStyles = makeStyles((theme) => ({
 
 export default function CheckboxList(props) {
   const classes = useStyles();
-  
   return (
     <List className={classes.root}>
       

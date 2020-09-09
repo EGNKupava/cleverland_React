@@ -4,7 +4,7 @@ import TextField from '@material-ui/core/TextField';
 import AddIcon from '@material-ui/icons/Add';
 import RemoveIcon from '@material-ui/icons/Remove';
 import Fab from '@material-ui/core/Fab';
-import CheckboxList from './CheckboxList'
+import CheckboxList from './CheckboxList';
 
 class ProductList extends React.Component {
 
