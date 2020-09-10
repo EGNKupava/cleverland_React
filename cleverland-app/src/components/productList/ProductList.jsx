@@ -1,10 +1,8 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import AddIcon from '@material-ui/icons/Add';
-import RemoveIcon from '@material-ui/icons/Remove';
-import Fab from '@material-ui/core/Fab';
 import CheckboxList from './CheckboxList';
+import Counter from './Counter';
 
 class ProductList extends React.Component {
 
@@ -30,9 +28,8 @@ class ProductList extends React.Component {
   };
   
   onChangeInput = (event) => {
-    let text = event.target.value;
     this.setState({
-        productName: text,
+      productName: event.target.value,
     });
   };
   
@@ -57,7 +54,7 @@ class ProductList extends React.Component {
       ...prevState,
       items: filteredItems
     }));
-  }
+  };
 
   render() {
     return (
@@ -71,18 +68,11 @@ class ProductList extends React.Component {
             helperText="Введите наименование продукта и количество"
             variant="outlined"
           />
-          <Fab onClick={this.onMinusClick} color="secondary" aria-label="add">
-            <RemoveIcon />
-          </Fab>
-          <TextField
-            className="num-input"
-            id="outlined-helperText"
-            value={this.state.productValue}
-            variant="outlined"
-          />
-          <Fab onClick={this.onPlusClick} color="secondary" aria-label="add">
-            <AddIcon />
-          </Fab>
+          <Counter
+           onMinusClick={this.onMinusClick} 
+           onPlusClick={this.onPlusClick}
+           productValue={this.state.productValue}
+           />
         </div>
         <div className="addButtonContainer">
           <Button onClick={this.onAddClick} variant="contained" color="primary">
