@@ -10,66 +10,43 @@ class ProductList extends React.Component {
 
   state = {
     items: [],
-    currentItem: {
-      productName: 'Наименование',
-      productValue: 1,
-      key: '',
-    }
+    productName: '',
+    productValue: 1,
+    key: '',
   };
 
   onMinusClick = () => {
-    if (this.state.currentItem.productValue > 1) {
+    if (this.state.productValue > 1) {
       this.setState((prevState) => ({
-        ...prevState,
-        currentItem: {
-          ...prevState.currentItem,
-          productValue: prevState.currentItem.productValue - 1,
-        }
+        productValue: prevState.productValue - 1,
       }))
     }
   };
 
   onPlusClick = () => {
     this.setState((prevState) => ({
-      ...prevState,
-      currentItem: {
-        ...prevState.currentItem,
-        productValue: prevState.currentItem.productValue + 1,
-      }
+      productValue: prevState.productValue + 1,
     }))
   };
-
-  onInputFocus =() => {
-    this.setState((prevState) => ({
-      ...prevState,
-      currentItem: {
-        ...prevState.currentItem,
-        productName: ''
-      }
-    }));
-  }
-
+  
   onChangeInput = (event) => {
     let text = event.target.value;
-    this.setState((prevState) => ({
-      ...prevState,
-      currentItem: {
-        ...prevState.currentItem,
+    this.setState({
         productName: text,
-        key: Date.now()
-      }
-    }));
+    });
   };
-
+  
   onAddClick = () => {
-    if (this.state.currentItem.productName && this.state.currentItem.productName !== 'Наименование') {
+    if (this.state.productName) {
+      let item = {
+        productName: this.state.productName,
+        productValue: this.state.productValue,
+        key: Date.now(),
+      };
       this.setState({
-        items: [...this.state.items, this.state.currentItem],
-        currentItem: {
-          productName: 'Наименование',
-          productValue: 1,
-          key: '',
-        }
+        items: [...this.state.items, item],
+        productName: '',
+        productValue: 1,
       });
     }
   };
@@ -88,9 +65,9 @@ class ProductList extends React.Component {
         <div className="input-wrap">
           <TextField
             onChange={this.onChangeInput}
-            onFocus={this.onInputFocus}
+            placeholder="Наименование"
             id="outlined-helperText"
-            value={this.state.currentItem.productName}
+            value={this.state.productName}
             helperText="Введите наименование продукта и количество"
             variant="outlined"
           />
@@ -100,7 +77,7 @@ class ProductList extends React.Component {
           <TextField
             className="num-input"
             id="outlined-helperText"
-            value={this.state.currentItem.productValue}
+            value={this.state.productValue}
             variant="outlined"
           />
           <Fab onClick={this.onPlusClick} color="secondary" aria-label="add">
