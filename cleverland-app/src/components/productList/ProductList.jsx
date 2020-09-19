@@ -1,91 +1,68 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import CheckboxList from './CheckboxList';
 import Counter from './Counter';
 
-class ProductList extends React.Component {
-
-  state = {
-    items: [],
-    productName: '',
-    productValue: 1,
-    key: '',
-  };
-
-  onMinusClick = () => {
-    if (this.state.productValue > 1) {
-      this.setState((prevState) => ({
-        productValue: prevState.productValue - 1,
-      }))
-    }
-  };
-
-  onPlusClick = () => {
-    this.setState((prevState) => ({
-      productValue: prevState.productValue + 1,
-    }))
-  };
+function ProductList() {
+  const [items, setItems] = useState([]);
+  const [productName, setProductName] = useState('');
+  const [productValue, setProductValue] = useState(1);
   
-  onChangeInput = (event) => {
-    this.setState({
-      productName: event.target.value,
-    });
+  const onMinusClick = () => {
+    if (productValue > 1) setProductValue(productValue - 1)
   };
+
+  const onPlusClick = () => setProductValue(productValue + 1);
   
-  onAddClick = () => {
-    if (this.state.productName) {
+  const onChangeInput = (event) => setProductName(event.target.value);
+  
+  const onAddClick = () => {
+    if (productName) {
       let item = {
-        productName: this.state.productName,
-        productValue: this.state.productValue,
+        productName,
+        productValue,
         key: Date.now(),
       };
-      this.setState({
-        items: [...this.state.items, item],
-        productName: '',
-        productValue: 1,
-      });
-    }
+      setItems([...items, item]);
+      setProductName('');
+      setProductValue(1);
+    };
+  };
+  
+  const deleteItem = (key) => {
+    const filteredItems = items.filter(item => item.key !== key);
+    setItems(filteredItems);
   };
 
-  deleteItem = (key) => {
-    const filteredItems = this.state.items.filter(item => item.key !== key);
-    this.setState((prevState) => ({
-      ...prevState,
-      items: filteredItems
-    }));
-  };
-
-  render() {
-    return (
-      <div className="ProductList">
-        <div className="input-wrap">
-          <TextField
-            onChange={this.onChangeInput}
-            placeholder="Наименование"
-            id="outlined-helperText"
-            value={this.state.productName}
-            helperText="Введите наименование продукта и количество"
-            variant="outlined"
-          />
-          <Counter
-           onMinusClick={this.onMinusClick} 
-           onPlusClick={this.onPlusClick}
-           productValue={this.state.productValue}
-           />
-        </div>
-        <div className="addButtonContainer">
-          <Button onClick={this.onAddClick} variant="contained" color="primary">
-            Добавить
-          </Button>
-        </div>
-        <CheckboxList
-          items={this.state.items}
-          deleteItem={this.deleteItem}
+  return (
+    <div className="ProductList">
+      <div className="input-wrap">
+        <TextField
+          onChange={onChangeInput}
+          placeholder="Наименование"
+          id="outlined-helperText"
+          value={productName}
+          helperText="Введите наименование продукта и количество"
+          variant="outlined"
+        />
+        <Counter
+          onMinusClick={onMinusClick}
+          onPlusClick={onPlusClick}
+          productValue={productValue}
         />
       </div>
-    )
-  };
+      <div className="addButtonContainer">
+        <Button onClick={onAddClick} variant="contained" color="primary">
+          Добавить
+          </Button>
+      </div>
+      <CheckboxList
+        items={items}
+        deleteItem={deleteItem}
+      />
+    </div>
+  )
 }
 
 export default ProductList;
