@@ -4,14 +4,12 @@ import TextField from '@material-ui/core/TextField';
 import CheckboxList from './CheckboxList';
 import Counter from './Counter';
 
-function ProductList() {
+const ProductList = () => {
   const [items, setItems] = useState([]);
   const [productName, setProductName] = useState('');
   const [productValue, setProductValue] = useState(1);
-  
-  const onMinusClick = () => {
-    if (productValue > 1) setProductValue(productValue - 1)
-  };
+    
+  const onMinusClick = () => (productValue > 1) && setProductValue(productValue - 1);
 
   const onPlusClick = () => setProductValue(productValue + 1);
   
@@ -23,6 +21,7 @@ function ProductList() {
         productName,
         productValue,
         key: Date.now(),
+        checked: false,
       };
       setItems([...items, item]);
       setProductName('');
@@ -34,6 +33,11 @@ function ProductList() {
     const filteredItems = items.filter(item => item.key !== key);
     setItems(filteredItems);
   };
+
+  const onCheck = (event, key) => {
+    items.find(item => item.key === key).checked = event.target.checked;
+    setItems(items);
+  }
 
   return (
     <div className="ProductList">
@@ -60,6 +64,7 @@ function ProductList() {
       <CheckboxList
         items={items}
         deleteItem={deleteItem}
+        onCheck={onCheck}
       />
     </div>
   )

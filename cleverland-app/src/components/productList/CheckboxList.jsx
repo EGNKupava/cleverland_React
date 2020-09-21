@@ -27,6 +27,7 @@ export default function CheckboxList(props) {
           <ListItem key={item.key} >
             <ListItemIcon>
               <Checkbox
+                onChange={(event) => props.onCheck(event, item.key)}
                 edge="start"
               />
             </ListItemIcon>
