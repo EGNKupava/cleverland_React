@@ -35,9 +35,10 @@ const ProductList = () => {
   };
 
   const onCheck = (event, key) => {
-    items.find(item => item.key === key).checked = event.target.checked;
-    setItems(items);
-  }
+    let newItems = items.map(item => item);
+    newItems.find(item => item.key === key).checked = event.target.checked;
+    setItems(newItems);
+  };
 
   return (
     <div className="ProductList">
@@ -59,7 +60,7 @@ const ProductList = () => {
       <div className="addButtonContainer">
         <Button onClick={onAddClick} variant="contained" color="primary">
           Добавить
-          </Button>
+        </Button>
       </div>
       <CheckboxList
         items={items}
