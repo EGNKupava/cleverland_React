@@ -1,13 +1,18 @@
 .Weather {
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   margin: 0 100px;
 }
 
 .Weather .current-weather {
+  padding-top: 30px;
   display: flex;
   flex-flow: column;
   align-items: center;
+}
+
+.Weather .current-weather .MuiFormControl-root {
+  width: 300px;
 }
 
 .Weather .current-weather .city-wether {

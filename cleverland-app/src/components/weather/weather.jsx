@@ -61,31 +61,31 @@ export const Weather = () => {
 
 		return (
 			<div className="Weather">
-				<div className="cities-list">
-					<h4>Список любимых городов</h4>
-					<Mycities myCities={myCities} deleteCity={deleteCity} onShowClick={onShowClick}/>
-				</div>
 				<div className="current-weather">
-				<TextField 
-					value={city} 
-					onChange={onCityChange}
-					placeholder="Город"
-					id="outlined-helperText"
-					helperText="Введите название города"
-        	variant="outlined" 
-				/>
-				<Button onClick={onShowClick} variant="contained" color="primary">Показать</Button>
-				{ isLoading && (<CircularProgress />)}
-				{ isLoaded && !isError && (
-					<div className='city-wether'>
-						<div>Температура в {weather.name}: {weather.main.temp} &deg;C</div>
-						<div>Скорость ветра: {weather.wind.speed} м/с</div>
-						<div>Влажность: {weather.main.humidity} %</div>
-						<div>Давление: {weather.main.pressure} hPa</div>
-						<Button onClick={onFavButtonClick} variant="contained" color="secondary">Добавить город в избранные</Button>
-					</div>
-				)}
-				{ isError && (<div>Произошла ошибка</div>)}
+					<TextField 
+						value={city} 
+						onChange={onCityChange}
+						placeholder="Город"
+						id="outlined-helperText"
+						helperText="Введите название города"
+        		variant="outlined" 
+					/>
+					<Button onClick={onShowClick} variant="contained" color="primary">Показать погоду</Button>
+					{ isLoading && (<CircularProgress />)}
+					{ isLoaded && !isError && (
+						<div className='city-wether'>
+							<div>Температура в {weather.name}: {weather.main.temp} &deg;C</div>
+							<div>Скорость ветра: {weather.wind.speed} м/с</div>
+							<div>Влажность: {weather.main.humidity} %</div>
+							<div>Давление: {weather.main.pressure} hPa</div>
+							<Button onClick={onFavButtonClick} variant="contained" color="secondary">Добавить в избранные</Button>
+						</div>
+					)}
+					{ isError && (<div>Произошла ошибка</div>)}
+				</div>
+				<div className="cities-list">
+					<h3>Список любимых городов</h3>
+					<Mycities myCities={myCities} deleteCity={deleteCity} onShowClick={onShowClick}/>
 				</div>
 				<div>
 					<Route path={`${match.path}/:city`}>
