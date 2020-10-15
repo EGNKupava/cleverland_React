@@ -58,7 +58,7 @@ export const Weather = () => {
   };
 
   let match = useRouteMatch();
-
+  console.log(store.getState());
   return (
     <div className="Weather">
       <div className="current-weather">

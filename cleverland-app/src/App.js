@@ -6,6 +6,7 @@ import {
   NavLink,
   Link
 } from "react-router-dom";
+import {Connect} from 'react-redux';
 
 import ProductList from './components/productList/ProductList';
 import { Weather } from './components/weather/weather';
@@ -42,5 +43,17 @@ const App = () => (
   </Router>
 );
 
+const mapStateToProps = (state) => ({
+  favorites: state.favorites,
+  weather:state.weather,
+});
 
-export default App;
+const mapDispatchToProps = (dispatch) => {
+  onSowRequest: (item) => dispatch ({type})
+  onShowSucces: () => dispath();
+  onFail: () => dispatch ({type})
+
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
