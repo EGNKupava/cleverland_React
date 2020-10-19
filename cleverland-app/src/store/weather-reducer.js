@@ -5,7 +5,7 @@ const DELETE_FROM_FAVORITE = 'DELETE-FROM-FAVORITE';
 const ON_SHOW_REQUEST = 'ON-SHOW-REQUEST';
 const ON_SHOW_SUCCESS = 'ON-SHOW-SUCCESS';
 const ON_SHOW_FAIL = 'ON-SHOW-FAIL';
-
+const ON_ClOSE_WEATHER = 'ON-CLOSE-EATHER';
 
 const initialState = { 
   favorites: [
@@ -25,6 +25,7 @@ export const deleteFromFavoriteAC = (key) => ({type: DELETE_FROM_FAVORITE, key})
 export const onShowRequestAC = () => ({type: ON_SHOW_REQUEST});
 export const onShowSuccesAC = (weatherData) => ({type: ON_SHOW_SUCCESS, weatherData});
 export const onShowFailAC = () => ({type: ON_SHOW_FAIL});
+export const onCloseWeatherAC = () => ({type: ON_ClOSE_WEATHER});
 
 export const weatherPageReduer = (state = initialState, action) => {
   switch (action.type) {
@@ -55,6 +56,7 @@ export const weatherPageReduer = (state = initialState, action) => {
         weather: {...state.weather,
           isLoaded: true,
           isLoading: false,
+          isError: false,
           data: action.weatherData}}
     case ON_SHOW_FAIL: 
       return  {...state,
@@ -62,6 +64,15 @@ export const weatherPageReduer = (state = initialState, action) => {
           isError: true,
           isLoading: false,
           isLoaded: false}}
+
+    case ON_ClOSE_WEATHER:
+      return { ...state, 
+      weather: {
+        isLoading: false,
+        isError: false,
+        isLoaded: false,
+        data: {}
+       }}
     default : return state
   }
 }

@@ -10,7 +10,13 @@ import { connect } from 'react-redux';
 
 import ProductList from './components/productList/ProductList';
 import { Weather } from './components/weather/weather';
-import { addToFavoriteAC, deleteFromFavoriteAC, onShowRequestAC, onShowSuccesAC, onShowFailAC } from './store/weather-reducer'; 
+import { 
+  addToFavoriteAC, 
+  deleteFromFavoriteAC, 
+  onShowRequestAC, 
+  onShowSuccesAC, 
+  onShowFailAC,
+  onCloseWeatherAC } from './store/weather-reducer'; 
 
 import './App.css';
 
@@ -55,6 +61,7 @@ const mapDispatchToProps = (dispatch) => ({
   onShowRequest: (item) => dispatch(onShowRequestAC(item)),
   onShowSucces: (data) => dispatch(onShowSuccesAC(data)),
   onFail: () => dispatch (onShowFailAC()),
+  onCloseWeather: () => dispatch(onCloseWeatherAC()),
 });
 
 let WeatherContainer = connect(mapStateToProps, mapDispatchToProps)(Weather);

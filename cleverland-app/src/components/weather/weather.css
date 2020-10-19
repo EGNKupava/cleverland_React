@@ -12,11 +12,12 @@
 }
 
 .Weather .current-weather .MuiFormControl-root {
-  width: 300px;
+  width: 330px;
 }
 
 .Weather .current-weather .city-wether {
-  margin: 20px;
+  width: 300px;
+  margin: 10px;
   padding: 20px;
   font-size: 18px;
   font-weight: 500;
