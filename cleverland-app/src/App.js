@@ -6,10 +6,11 @@ import {
   NavLink,
   Link
 } from "react-router-dom";
-import {Connect} from 'react-redux';
+import { connect } from 'react-redux';
 
 import ProductList from './components/productList/ProductList';
 import { Weather } from './components/weather/weather';
+import { addToFavoriteAC, deleteFromFavoriteAC, onShowRequestAC, onShowSuccesAC, onShowFailAC } from './store/weather-reducer'; 
 
 import './App.css';
 
@@ -35,7 +36,7 @@ const App = () => (
             <ProductList className="ProductList" />
           </Route>
           <Route path="/weather">
-            <Weather />
+            <WeatherContainer />
           </Route>
         </Switch>
       </div>
@@ -45,15 +46,16 @@ const App = () => (
 
 const mapStateToProps = (state) => ({
   favorites: state.favorites,
-  weather:state.weather,
+  weather: state.weather,
 });
 
-const mapDispatchToProps = (dispatch) => {
-  onSowRequest: (item) => dispatch ({type})
-  onShowSucces: () => dispath();
-  onFail: () => dispatch ({type})
+const mapDispatchToProps = (dispatch) => ({
+  onAddToFavorite: (city) => dispatch(addToFavoriteAC(city)),
+  onDeleteFromfavorite: (key) => dispatch(deleteFromFavoriteAC(key)),
+  onShowRequest: (item) => dispatch(onShowRequestAC(item)),
+  onShowSucces: (data) => dispatch(onShowSuccesAC(data)),
+  onFail: () => dispatch (onShowFailAC()),
+});
 
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+let WeatherContainer = connect(mapStateToProps, mapDispatchToProps)(Weather);
+export default App;
