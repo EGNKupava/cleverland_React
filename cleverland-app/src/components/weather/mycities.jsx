@@ -8,12 +8,11 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
 export const Mycities = ({ favorites, deleteCity }) => {
-  let { url } = useRouteMatch();
-  debugger
+  const { url } = useRouteMatch();
   return (
     <List>
-      {favorites.map((city) => (
-        <NavLink to={`${url}/${city.key}`}>
+      {favorites.map((city, index) => (
+        <NavLink to={`${url}/${city.key}`} key={index}>
           <ListItem key={city.key} >
             <ListItemText primary={`${city.cityName}`} />
             <ListItemSecondaryAction>
