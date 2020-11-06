@@ -2,63 +2,44 @@ import React, { useState } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Route, useRouteMatch } from "react-router-dom";
 import { TextField, Button } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
+import CancelIcon from '@material-ui/icons/Cancel';
 
 import { Mycities } from './mycities';
 import { SelectedCity } from './selectedCity';
 
 import './weather.css';
 
-export const Weather = () => {
-  const [city, setCity] = useState('');
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [weather, setWeather] = useState({});
-  const [isError, setIsError] = useState(false);
-  const [myCities, setCities] = useState([{ cityName: 'Орша', key: 'Orsha' }])
+export const Weather = (props) => {
+  const {
+    favorites, 
+    weather, 
+    onAddToFavorite, 
+    onDeleteFromfavorite, 
+    onFail, onShowSucces, 
+    onShowRequest, 
+    onCloseWeather } = props;
 
+  const [city, setCity] = useState('');
+  
   const onCityChange = (event) => (setCity(event.target.value))
 
   const onShowClick = async () => {
-    setIsError(false);
-    setIsLoading(true);
+    onShowRequest();
     try {
       const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=f4a3e13f259dfdbd23f06c3973018636&units=metric`);
-      const cityWeather = await response.json();
-      setIsLoading(false);
-      if (cityWeather.cod === '404') {
-        setIsLoaded(false);
+      const weatherData = await response.json();
+      if (weatherData.cod !== 200) {
         throw new Error("Данные некорректны");
       }
-      setWeather(cityWeather);
-      setIsLoaded(true);
-    } catch (err) {
-      setIsError(true);
+      onShowSucces(weatherData);
+      } catch (err) {
+        onFail();
     }
   };
 
-  const onFavButtonClick = () => {
-    let cityContain = false;
-    myCities.forEach(item => {
-      if (item.cityName === city) cityContain = true;
-    });
-    if (!cityContain) {
-      let item = {
-        cityName: city,
-        key: weather.name,
-      };
-      setCities([...myCities, item]);
-    };
-    setIsLoaded(false);
-    setCity('');
-  }
-
-  const deleteCity = (key) => {
-    const filteredCities = myCities.filter(item => item.key !== key);
-    setCities(filteredCities);
-  };
-
   let match = useRouteMatch();
-
+  
   return (
     <div className="Weather">
       <div className="current-weather">
@@ -71,21 +52,34 @@ export const Weather = () => {
           variant="outlined"
         />
         <Button onClick={onShowClick} variant="contained" color="primary">Показать погоду</Button>
-        {isLoading && (<CircularProgress />)}
-        {isLoaded && !isError && (
+        {weather.isLoading && (<CircularProgress />)}
+        {weather.data && weather.isLoaded && (
           <div className='city-wether'>
-            <div>Температура в {weather.name}: {weather.main.temp} &deg;C</div>
-            <div>Скорость ветра: {weather.wind.speed} м/с</div>
-            <div>Влажность: {weather.main.humidity} %</div>
-            <div>Давление: {weather.main.pressure} hPa</div>
-            <Button onClick={onFavButtonClick} variant="contained" color="secondary">Добавить в избранные</Button>
+            <IconButton 
+              onClick={() => {
+                onCloseWeather();
+                setCity('')
+              }} 
+              style={{float: 'right'}}>
+                <CancelIcon />
+            </IconButton>
+            <div>Температура в {weather.data.name}: {weather.data.main.temp} &deg;C</div>
+            <div>Скорость ветра: {weather.data.wind.speed} м/с</div>
+            <div>Влажность: {weather.data.main.humidity} %</div>
+            <div>Давление: {weather.data.main.pressure} hPa</div>
+            <Button onClick={() => {
+              onAddToFavorite(weather.data.name);
+              setCity('');
+              onCloseWeather()}} 
+              variant="contained" 
+              color="secondary">В избранные</Button>
           </div>
         )}
-        {isError && (<div>Произошла ошибка</div>)}
+        {weather.isError && (<div>Произошла ошибка</div>)}
       </div>
       <div className="cities-list">
         <h3>Список любимых городов</h3>
-        <Mycities myCities={myCities} deleteCity={deleteCity} onShowClick={onShowClick} />
+        <Mycities favorites={favorites} deleteCity={onDeleteFromfavorite} />
       </div>
       <div>
         <Route path={`${match.path}/:city`}>

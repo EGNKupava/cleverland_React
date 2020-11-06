@@ -7,12 +7,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-export const Mycities = ({ myCities, deleteCity }) => {
-  let { url } = useRouteMatch();
+export const Mycities = ({ favorites, deleteCity }) => {
+  const { url } = useRouteMatch();
   return (
     <List>
-      {myCities.map((city) => (
-        <NavLink to={`${url}/${city.key}`}>
+      {favorites.map((city, index) => (
+        <NavLink to={`${url}/${city.key}`} key={index}>
           <ListItem key={city.key} >
             <ListItemText primary={`${city.cityName}`} />
             <ListItemSecondaryAction>
